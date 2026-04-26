@@ -8,7 +8,7 @@ class NoFileException(Exception):
 
 file = 'data.json'
 
-def setcmd(Indata):
+def set_cmd(Indata):
     colon_index = Indata.find(":")
     if (colon_index>4):
         cmd = Indata[4:colon_index]
@@ -39,7 +39,7 @@ def read_data_from_file(file):
         except Exception as e:
             print(f'[Exception] {e}')
     return data
-def delcmd(del_cmd):
+def del_cmd(cmd):
     try:
         data = read_data_from_file(file)
     except NoFileException:
@@ -50,7 +50,7 @@ def delcmd(del_cmd):
     found = False
 
     for item in data:
-        if item["cmd"] == del_cmd:
+        if item["cmd"] == cmd:
             found = True
         else:
             new_data.append(item)
@@ -59,16 +59,16 @@ def delcmd(del_cmd):
             json.dump(new_data, f, indent=4)
         print("deleted")
     else:
-        print(f"there is no cmd({del_cmd}) in file")
+        print(f"there is no cmd({cmd}) in file")
     
             
 
-def delallcmd():
+def del_all_cmd():
     redata = []
     with open(file, 'w') as f:
         json.dump(redata, f)
 
-def runcmd(get_cmd):
+def rum_cmd(get_cmd):
     if os.path.exists(file):
         with open(file, "r", encoding="utf-8") as f:
             try:
@@ -91,7 +91,7 @@ def runcmd(get_cmd):
         print(f"Wrong cmd({item['code']}).")
         agree = input("delet your code?(yes/no)")
         if agree == "yes":
-            delcmd(get_cmd)
+            del_cmd(get_cmd)
         return
     except Exception as e:
         print(f"Fail to run cmd (Exception: {type(e).__name__} / detail: {e})") 
@@ -113,14 +113,14 @@ def main():
         if (Indata.lower() == "end"):
             break
         elif (Indata[0:4] == "set."):
-            setcmd(Indata)
+            set_cmd(Indata)
         elif (Indata[0:4] == "del."):
-            delcmd(Indata[4:])
+            del_cmd(Indata[4:])
         elif (Indata == "delall"):
-            delallcmd()
+            del_all_cmd()
 
         elif (Indata[0:4] == "run."):
-            runcmd(Indata[4:])
+            rum_cmd(Indata[4:])
 
 if __name__=="__main__":
     main()
