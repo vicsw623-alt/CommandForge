@@ -116,7 +116,7 @@ new_data_file();
 
 def help():
     print(
-        "------------------------------------\n"
+        "-------------------------------------\n"
         "set.<cmd>:<code> : make new cmd\n"
         "run.<cmd> : run cmd\n"
         "del.<cmd> deleted cmd\n"
@@ -125,7 +125,7 @@ def help():
         "list : show all cmd\n"
         "end : exit this program\n"
         "help : show help like this\n"
-        "------------------------------------"
+        "-------------------------------------"
     )
 def main():
     while True:
