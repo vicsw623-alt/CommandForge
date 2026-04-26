@@ -10,21 +10,30 @@ file = 'data.json'
 
 def set_cmd(Indata):
     colon_index = Indata.find(":")
-    if (colon_index>4):
+    if colon_index > 4:
         cmd = Indata[4:colon_index]
         code = Indata[colon_index+1:]
+
+        try:
+            data = read_data_from_file(file)
+        except NoFileException:
+            new_data_file()
+            data = []
+
+        # 중복 체크
         for item in data:
-            if not item["cmd"] == cmd:
-                try:
-                    data = read_data_from_file(file)
-                except NoFileException:
-                    new_data_file()
-                data.append({
-                    "cmd": cmd,
-                    "code": code
-                })
-                with open(file, "w", encoding="utf-8") as f:
-                    json.dump(data, f, indent=4)
+            if item["cmd"] == cmd:
+                print("This command already exists")
+                return
+
+        # 추가
+        data.append({
+            "cmd": cmd,
+            "code": code
+        })
+
+        with open(file, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4)
 
 indata = []
 def new_data_file():
@@ -105,6 +114,19 @@ def rum_cmd(get_cmd):
         print(f"there is no cmd({get_cmd})")
 new_data_file();
 
+def help():
+    print(
+        "------------------------------------\n"
+        "set.<cmd>:<code> : make new cmd\n"
+        "run.<cmd> : run cmd\n"
+        "del.<cmd> deleted cmd\n"
+        "show.<cmd> show the cmd's code\n"
+        "delall : deleted all cmd\n"
+        "list : show all cmd\n"
+        "end : exit this program\n"
+        "help : show help like this\n"
+        "------------------------------------"
+    )
 def main():
     while True:
         Indata = input("")
@@ -122,9 +144,10 @@ def main():
             del_cmd(Indata[4:])
         elif (Indata == "delall"):
             del_all_cmd()
-
         elif (Indata[0:4] == "run."):
             rum_cmd(Indata[4:])
+        elif (Indata[0:5] == "help"):
+            help()
 
 if __name__=="__main__":
     main()
