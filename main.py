@@ -67,6 +67,7 @@ def del_all_cmd():
     redata = []
     with open(file, 'w') as f:
         json.dump(redata, f)
+    print("삭제됨")
 
 def rum_cmd(get_cmd):
     if os.path.exists(file):

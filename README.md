@@ -1,47 +1,71 @@
-# 📦 CmdForge 
+# ⚙️ CmdForge
 
-사용자가 직접 커맨드를 저장하고 실행할 수 있는 Python 기반 커맨드 관리 시스템.
-
----
-
-## 🔧 기능
-
-* 커맨드 저장 (`set`)
-* 커맨드 실행 (`run`)
-* 커맨드 삭제 (`del`)
-* 전체 삭제 (`delall`)
-* JSON 파일을 이용한 데이터 저장
+A lightweight Python-based command management system that lets you **store, manage, and execute custom commands dynamically** using JSON.
 
 ---
 
-## 📁 파일 구조
+## 🚀 Overview
+
+CmdForge allows you to:
+
+* Define custom commands with Python code
+* Store them persistently in a JSON file
+* Execute them on demand
+* Manage (delete/reset) commands easily
+
+Think of it as a **simple macro / command execution engine** built with Python.
+
+---
+
+## 📁 Project Structure
 
 ```
 project/
-│── main.py
-│── data.json (자동 생성)
-│── Code.py (사용자 정의 함수 모음)
+│── main.py        # Main program
+│── data.json      # Command storage (auto-created)
+│── Code.py        # Optional: predefined safe functions
 ```
 
 ---
 
-## ⚙️ 동작 방식
+## ⚙️ How It Works
 
-* 커맨드와 코드를 `data.json`에 저장
-* `run` 명령어로 저장된 코드를 실행 (`exec` 사용)
-* 존재하지 않는 파일이면 자동 생성
+* Commands are stored in `data.json` as:
+
+```json
+[
+    {
+        "cmd": "example",
+        "code": "print('Hello')"
+    }
+]
+```
+
+* The program:
+
+  1. Parses user input
+  2. Saves commands
+  3. Executes code using `exec()`
 
 ---
 
-## 🚀 사용법
+## 🧪 Usage
 
-### 1️⃣ 커맨드 저장
+Run the program:
+
+```bash
+python main.py
+```
+
+---
+
+### 1️⃣ Add a Command
 
 ```
-set.커맨드이름:실행코드
+set.<command>:<python_code>
 ```
 
-예시:
+Example:
 
 ```
 set.hello:print("Hello World")
@@ -49,19 +73,19 @@ set.hello:print("Hello World")
 
 ---
 
-### 2️⃣ 커맨드 실행
+### 2️⃣ Run a Command
 
 ```
-run.커맨드이름
+run.<command>
 ```
 
-예시:
+Example:
 
 ```
 run.hello
 ```
 
-출력:
+Output:
 
 ```
 hello 실행
@@ -70,15 +94,15 @@ Hello World
 
 ---
 
-### 3️⃣ 커맨드 삭제
+### 3️⃣ Delete a Command
 
 ```
-del.커맨드이름
+del.<command>
 ```
 
 ---
 
-### 4️⃣ 전체 삭제
+### 4️⃣ Delete All Commands
 
 ```
 delall
@@ -86,7 +110,7 @@ delall
 
 ---
 
-### 5️⃣ 프로그램 종료
+### 5️⃣ Exit Program
 
 ```
 end
@@ -94,55 +118,60 @@ end
 
 ---
 
-## ⚠️ 주의사항
+## ⚠️ Important Notes
 
-### ❗ exec 사용
+### 🔥 Use of `exec()`
 
-이 프로그램은 Python의 `exec()`를 사용함
+This program executes raw Python code using `exec()`.
 
-→ 즉, 저장된 코드는 그대로 실행됨
-→ 악성 코드 실행 가능성 있음
+* This means **any code will run as-is**
+* It can be dangerous if misused
 
-👉 개인용 / 테스트용으로만 사용하는 것을 권장
+👉 Recommended for:
 
----
+* Personal use
+* Learning / experimentation
 
-### ❗ JSON 구조
+👉 Not recommended for:
 
-`data.json` 예시:
-
-```json
-[
-    {
-        "cmd": "hello",
-        "code": "print('Hello World')"
-    }
-]
-```
+* Untrusted input
+* Production environments
 
 ---
 
-## 🧠 내부 로직 요약
+## 🧠 Core Functions
 
-* `setcmd()` → 입력 파싱 후 JSON에 추가
-* `runcmd()` → cmd 매칭 후 exec 실행
-* `delcmd()` → 특정 cmd 제거
-* `delallcmd()` → 전체 초기화
-* `read_data_from_file()` → JSON 읽기
-
----
-
-## 🔥 개선 아이디어 (참고)
-
-(이건 추가 제안이라 선택사항)
-
-* exec 제한 (보안)
-* 명령어 중복 방지
-* Code.py 함수만 실행하도록 제한
-* 커맨드 목록 보기 기능 (`list`)
+* `setcmd()` → Parses and saves commands
+* `runcmd()` → Executes stored commands
+* `delcmd()` → Deletes specific command
+* `delallcmd()` → Clears all commands
+* `read_data_from_file()` → Loads JSON data
 
 ---
 
-## 📌 한 줄 요약
+## 💡 Possible Improvements
 
-> JSON 기반으로 커맨드를 저장하고 실행하는 간단한 매크로 시스템
+* Restrict execution to safe functions (via `Code.py`)
+* Prevent duplicate commands
+* Add `list` command to view all stored commands
+* Replace `exec()` with safer execution logic
+
+---
+
+## 📌 Summary
+
+> CmdForge is a simple but powerful tool for creating and executing custom Python commands on the fly.
+
+---
+
+## 🛠 Requirements
+
+* Python 3.x
+
+---
+
+## 📄 License
+
+This project is for educational purposes. Use at your own risk.
+
+---
