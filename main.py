@@ -13,21 +13,24 @@ def set_cmd(Indata):
     if (colon_index>4):
         cmd = Indata[4:colon_index]
         code = Indata[colon_index+1:]
-        print(cmd, code)
-        try:
-            data = read_data_from_file(file)
-        except NoFileException:
-            new_data_file()
-        data.append({
-            "cmd": cmd,
-            "code": code
-        })
-        with open(file, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4)
+        for item in data:
+            if not item["cmd"] == cmd:
+                try:
+                    data = read_data_from_file(file)
+                except NoFileException:
+                    new_data_file()
+                data.append({
+                    "cmd": cmd,
+                    "code": code
+                })
+                with open(file, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=4)
 
+indata = []
 def new_data_file():
     if not os.path.exists(file):
-        open(file, 'x', )
+        with open(file, 'w') as f:
+            json.dump(indata, f, indent=4 )
 
 def read_data_from_file(file):
     if not os.path.exists(file):    
@@ -100,7 +103,7 @@ def rum_cmd(get_cmd):
 
     if not found:
         print(f"there is no cmd({get_cmd})")
-
+new_data_file();
 
 def main():
     while True:
