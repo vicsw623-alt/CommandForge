@@ -1,5 +1,4 @@
 import json
-import Code
 import os
 
 class NoFileException(Exception):
@@ -141,6 +140,13 @@ def show(show_cmd):
     if not found:
         print(f'there is no cmd({show_cmd})')
 
+def list():
+    print("-------------------------------------------------------")
+    data = read_data_from_file(file)
+
+    for item in data:
+        print(item["cmd"])
+    print("-------------------------------------------------------")
 def main():
     while True:
         Indata = input("")
@@ -164,5 +170,7 @@ def main():
             help()
         elif (Indata[0:5] == "show."):
             show(Indata[5:])
+        elif (Indata[0:4] == "list"):
+            list()
 if __name__=="__main__":
     main()
