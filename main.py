@@ -50,7 +50,7 @@ def read_data_from_file(file):
         except Exception as e:
             print(f'[Exception] {e}')
     return data
-def del_cmd(cmd):
+def del_cmd(cmd,msg):
     try:
         data = read_data_from_file(file)
     except NoFileException:
@@ -68,7 +68,7 @@ def del_cmd(cmd):
     if found:
         with open(file, 'w') as f:
             json.dump(new_data, f, indent=4)
-        print("deleted")
+        print(msg)
     else:
         print(f"there is no cmd({cmd}) in file")
     
@@ -120,6 +120,7 @@ def help():
         "run.<cmd> : run cmd\n"
         "del.<cmd> deleted cmd\n"
         "show.<cmd> show the cmd's code\n"
+        "mod.<cmd>:<code> : modify cmd\n"
         "delall : deleted all cmd\n"
         "list : show all cmd\n"
         "end : exit this program\n"
@@ -147,6 +148,14 @@ def list():
     for item in data:
         print(item["cmd"])
     print("-------------------------------------------------------")
+
+def mod(Indata):
+    colon_index = Indata.find(":")
+    if colon_index > 4:
+        cmd = Indata[4:colon_index]
+        del_cmd(cmd,"modified")
+    set_cmd(Indata)
+
 def main():
     while True:
         Indata = input("")
@@ -161,7 +170,7 @@ def main():
         elif (Indata[0:4] == "set."):
             set_cmd(Indata)
         elif (Indata[0:4] == "del."):
-            del_cmd(Indata[4:])
+            del_cmd(Indata[4:],"deleted")
         elif (Indata == "delall"):
             del_all_cmd()
         elif (Indata[0:4] == "run."):
@@ -172,5 +181,8 @@ def main():
             show(Indata[5:])
         elif (Indata[0:4] == "list"):
             list()
+        elif (Indata[0:4] == "mod."):
+            mod(Indata)
+
 if __name__=="__main__":
     main()

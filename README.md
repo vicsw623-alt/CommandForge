@@ -1,40 +1,44 @@
 # CommandForge
 
-CommandForge is a simple CLI-based command manager written in Python.
-It allows you to create, store, execute, and manage custom commands using a JSON file.
+CommandForge is a simple Python-based CLI tool that allows you to create, manage, and execute custom commands stored in a JSON file.
 
----
-
-## 📌 Features
+## Features
 
 * Create custom commands with Python code
-* Store commands in a JSON file (`data.json`)
-* Execute saved commands dynamically
-* Delete individual commands or all commands
-* View stored commands and their code
-* List all available commands
+* Execute saved commands
+* Delete specific commands
+* Modify existing commands
+* View command details
+* List all commands
+* Reset all stored commands
 
----
-
-## ⚙️ Requirements
+## Requirements
 
 * Python 3.x
+* No external libraries required (uses built-in `json` and `os`)
 
----
+## How It Works
 
-## 🚀 Usage
+All commands are stored in a file named `data.json`. Each command consists of:
 
-Run the program:
+```json
+{
+    "cmd": "command_name",
+    "code": "python_code"
+}
+```
+
+## Usage
+
+Run the script:
 
 ```bash
 python main.py
 ```
 
----
+Then use the following commands in the CLI:
 
-## 🧩 Commands
-
-### 1. Create a command
+### Create a Command
 
 ```
 set.<cmd>:<code>
@@ -46,9 +50,7 @@ Example:
 set.hello:print("Hello World")
 ```
 
----
-
-### 2. Run a command
+### Run a Command
 
 ```
 run.<cmd>
@@ -60,9 +62,7 @@ Example:
 run.hello
 ```
 
----
-
-### 3. Delete a command
+### Delete a Command
 
 ```
 del.<cmd>
@@ -74,39 +74,39 @@ Example:
 del.hello
 ```
 
----
-
-### 4. Delete all commands
+### Modify a Command
 
 ```
-delall
+mod.<cmd>:<code>
 ```
 
----
+* Deletes the existing command and replaces it with new code
 
-### 5. Show command code
+Example:
+
+```
+mod.hello:print("Hello again")
+```
+
+### Show Command Code
 
 ```
 show.<cmd>
 ```
 
-Example:
-
-```
-show.hello
-```
-
----
-
-### 6. List all commands
+### List All Commands
 
 ```
 list
 ```
 
----
+### Delete All Commands
 
-### 7. Help
+```
+delall
+```
+
+### Help
 
 ```
 help
@@ -118,55 +118,41 @@ or
 ?
 ```
 
----
-
-### 8. Exit program
+### Exit Program
 
 ```
 end
 ```
 
----
+## Error Handling
 
-## 📂 Data Storage
+* If `data.json` does not exist, it will be automatically created.
+* Duplicate commands are not allowed.
+* If a command fails during execution:
 
-All commands are stored in:
+  * `NameError` is handled separately and may prompt deletion.
+  * Other exceptions will display error type and details.
+
+## Notes
+
+* Commands are executed using Python's `exec()` function.
+* Be cautious: running arbitrary code can be dangerous.
+
+## File Structure
 
 ```
-data.json
+.
+├── main.py
+└── data.json
 ```
 
-Format example:
+## Future Improvements (Optional Ideas)
 
-```json
-[
-    {
-        "cmd": "hello",
-        "code": "print(\"Hello World\")"
-    }
-]
-```
+* Add command validation before saving
+* Safer execution environment (sandboxing)
+* Command descriptions
+* Export/import commands
 
 ---
 
-## ⚠️ Notes
-
-* Commands execute using Python's `exec()` function.
-* Invalid Python code may cause errors during execution.
-* Be cautious when running unknown or unsafe code.
-
----
-
-## 🛠️ Future Improvements (Optional Ideas)
-
-* Command editing feature
-* Command categories
-* Safer execution environment
-* Command import/export
-
----
-
-## 📖 Summary
-
-CommandForge is a lightweight tool for experimenting with dynamic command execution in Python.
-It is useful for learning, prototyping, and building simple command systems.
+Enjoy building your own command system with CommandForge!
