@@ -79,7 +79,7 @@ def del_all_cmd():
     redata = []
     with open(file, 'w') as f:
         json.dump(redata, f)
-    print("삭제됨")
+    print("deleted")
 
 def rum_cmd(get_cmd):
     if os.path.exists(file):
@@ -96,7 +96,7 @@ def rum_cmd(get_cmd):
     try:
         for item in data:
             if item["cmd"] == get_cmd: 
-                print(f"{get_cmd} 실행")
+                print(f"[run]|{get_cmd}")
                 exec(item["code"])
                 found = True
                 break
@@ -127,6 +127,20 @@ def help():
         "help : show help like this\n"
         "-------------------------------------"
     )
+
+def show(show_cmd):
+    data = read_data_from_file(file)
+
+    found = False
+    for item in data:
+        if item["cmd"] == show_cmd:
+            print(f'[show] {item["cmd"]}:{item["code"]}')
+            found = True
+            break
+
+    if not found:
+        print(f'there is no cmd({show_cmd})')
+
 def main():
     while True:
         Indata = input("")
@@ -146,8 +160,9 @@ def main():
             del_all_cmd()
         elif (Indata[0:4] == "run."):
             rum_cmd(Indata[4:])
-        elif (Indata[0:5] == "help"):
+        elif (Indata[0:5] == "help" or Indata[0] == "?"):
             help()
-
+        elif (Indata[0:5] == "show."):
+            show(Indata[5:])
 if __name__=="__main__":
     main()

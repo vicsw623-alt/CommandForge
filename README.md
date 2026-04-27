@@ -1,68 +1,45 @@
-# ⚙️ CmdForge
-
-A lightweight Python-based command management system that lets you **store, manage, and execute custom commands dynamically** using JSON.
+좋아, 지금 코드 기준으로 보면 기능이 꽤 정리돼 있어서 README도 그에 맞게 구조 잡아주는 게 맞다. 핵심 기능들을 정확히 반영해서 깔끔한 영어 README 만들어줄게.
 
 ---
 
-## 🚀 Overview
+# CommandForge
 
-CmdForge allows you to:
+CommandForge is a simple Python-based CLI tool that allows you to create, store, and execute custom commands using a JSON file.
 
-* Define custom commands with Python code
-* Store them persistently in a JSON file
-* Execute them on demand
-* Manage (delete/reset) commands easily
+## Features
 
-Think of it as a **simple macro / command execution engine** built with Python.
+* Create custom commands with Python code
+* Execute stored commands dynamically
+* Delete specific commands or all commands
+* View stored command code
+* List and manage commands through a simple CLI interface
+* Automatic JSON file creation if it does not exist
+* Duplicate command prevention
 
----
+## How It Works
 
-## 📁 Project Structure
-
-```
-project/
-│── main.py        # Main program
-│── data.json      # Command storage (auto-created)
-│── Code.py        # Optional: predefined safe functions
-```
-
----
-
-## ⚙️ How It Works
-
-* Commands are stored in `data.json` as:
+Commands are stored in a `data.json` file in the following format:
 
 ```json
 [
     {
         "cmd": "example",
-        "code": "print('Hello')"
+        "code": "print('Hello World')"
     }
 ]
 ```
 
-* The program:
+Each command consists of:
 
-  1. Parses user input
-  2. Saves commands
-  3. Executes code using `exec()`
+* `cmd`: the command name
+* `code`: the Python code executed when the command runs
 
----
+## Usage
 
-## 🧪 Usage
-
-Run the program:
-
-```bash
-python main.py
-```
-
----
-
-### 1️⃣ Add a Command
+### Create a Command
 
 ```
-set.<command>:<python_code>
+set.<cmd>:<code>
 ```
 
 Example:
@@ -73,10 +50,10 @@ set.hello:print("Hello World")
 
 ---
 
-### 2️⃣ Run a Command
+### Run a Command
 
 ```
-run.<command>
+run.<cmd>
 ```
 
 Example:
@@ -85,24 +62,23 @@ Example:
 run.hello
 ```
 
-Output:
+---
+
+### Delete a Command
 
 ```
-hello 실행
-Hello World
+del.<cmd>
+```
+
+Example:
+
+```
+del.hello
 ```
 
 ---
 
-### 3️⃣ Delete a Command
-
-```
-del.<command>
-```
-
----
-
-### 4️⃣ Delete All Commands
+### Delete All Commands
 
 ```
 delall
@@ -110,68 +86,84 @@ delall
 
 ---
 
-### 5️⃣ Exit Program
+### Show Command Code
+
+```
+show.<cmd>
+```
+
+Example:
+
+```
+show.hello
+```
+
+---
+
+### Help Menu
+
+```
+help
+```
+
+or
+
+```
+?
+```
+
+---
+
+### Exit Program
 
 ```
 end
 ```
 
----
+## Error Handling
 
-## ⚠️ Important Notes
+* If a command does not exist:
 
-### 🔥 Use of `exec()`
+  ```
+  there is no cmd(<cmd>)
+  ```
 
-This program executes raw Python code using `exec()`.
+* If a command already exists:
 
-* This means **any code will run as-is**
-* It can be dangerous if misused
+  ```
+  This command already exists
+  ```
 
-👉 Recommended for:
+* If execution fails due to invalid code:
 
-* Personal use
-* Learning / experimentation
+  * The error type and details are displayed
+  * Option to delete the faulty command is provided
 
-👉 Not recommended for:
+## Notes
 
-* Untrusted input
-* Production environments
+* Commands are executed using Python's `exec()` function
+  → Only use trusted code to avoid security risks
 
----
+* The program automatically creates `data.json` if it does not exist
 
-## 🧠 Core Functions
-
-* `setcmd()` → Parses and saves commands
-* `runcmd()` → Executes stored commands
-* `delcmd()` → Deletes specific command
-* `delallcmd()` → Clears all commands
-* `read_data_from_file()` → Loads JSON data
-
----
-
-## 💡 Possible Improvements
-
-* Restrict execution to safe functions (via `Code.py`)
-* Prevent duplicate commands
-* Add `list` command to view all stored commands
-* Replace `exec()` with safer execution logic
-
----
-
-## 📌 Summary
-
-> CmdForge is a simple but powerful tool for creating and executing custom Python commands on the fly.
-
----
-
-## 🛠 Requirements
+## Requirements
 
 * Python 3.x
 
----
+## File Structure
 
-## 📄 License
+```
+project/
+│── main.py
+│── data.json (auto-created)
+│── Code.py (optional predefined commands)
+```
 
-This project is for educational purposes. Use at your own risk.
+## Future Improvements (Optional Ideas)
+
+* Command listing feature (`list`)
+* Command editing
+* Safer execution environment (sandboxing)
+* Command categories or tags
 
 ---
